@@ -16,11 +16,13 @@ public class UnitedBasePage {
     public List<WebElement> mainMenu;
    @FindBy(xpath = "//li[@id=\"travelTab\"]/..//li")
     public List<WebElement> travelManu;
-   @FindBy(css = " label[class*='VrnUD']")
+   //////////////////////////////////////////////////////////////////////////////
+   @FindBy(css = "div[class*='radioContainer']>label")
     public List<WebElement> radioButtonsLabels;
-   @FindBy(css = "span[class*='2DHJD']")
-    public List<WebElement> radioButtons;
-    @FindBy(id = "award")
+   @FindBy(css = "div[class*='radioContainer'] input")
+    public List<WebElement> radioButtonsInput;
+    ////////////////////////////////////////////////////////////////////////////
+   @FindBy(id = "award")
     public WebElement bookWithMilesCheckbox;
     @FindBy(css = "div[class*='2SGSV'] span")
     public WebElement bookWithMilesLabel;
@@ -28,6 +30,7 @@ public class UnitedBasePage {
     public WebElement flexibleDatesCheckbox;
     @FindBy(css = "#flexDatesLabel>span")
     public WebElement flexibleDatesLabel;
+    ////////////////////////////////////////////////////////////////////////////
     @FindBy(id = "bookFlightOriginInput")
     public WebElement fromInputBox;
     @FindBy(id = "bookFlightDestinationInput")

@@ -1,6 +1,7 @@
 package scripts;
 
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -8,49 +9,80 @@ import org.testng.annotations.Test;
 import pages.UnitedBasePage;
 import utilities.WindowHandler;
 
+import java.util.List;
+
 public class UnitedBaseTest extends UnitedBase {
     @BeforeMethod
     public void setPage() {
         unitedBasePage = new UnitedBasePage();
     }
 
-    @Test(priority = 1, description = "Validate that main menu is displayed")
+    /*
+Test Case 1: Validate "Main menu" navigation items
+Given user is on "https://www.united.com/en/us"
+Then user should see “Main menu” navigation items
+|BOOK                              |
+|MY TRIPS                          |
+|TRAVEL INFO            |
+|MILEAGEPLUS® PROGRAM|
+|DEALS                             |
+|HELP
+     */
+    @Test(priority = 1, description = "Validate \"Main menu\" navigation items")
 
     public void validateMainManu() {
-        for (int i = 0; i < unitedBasePage.mainMenu.size(); i++) {
-            Assert.assertTrue(unitedBasePage.mainMenu.get(i).isDisplayed());
+        String[] expectedData = {"BOOK", "MY TRIPS", "TRAVEL INFO", "MILEAGEPLUS® PROGRAM","DEALS", "HELP"};
+        List<WebElement> actualData = unitedBasePage.mainMenu;
+
+        for (int i = 0; i < actualData.size(); i++) {
+            Assert.assertEquals(expectedData[i], actualData.get(i).getText());
         }
     }
 
-    @Test(priority = 2, description = "Validate book travel manu is displayed ")
+    /*
+Test Case 2: Validate "Book travel menu" navigation items
+Given user is on "https://www.united.com/en/us"
+Then user should see "Book travel menu" navigation items
+|Book             |
+|Flight Status|
+|Check-in       |
+|My trips
+     */
+
+    @Test(priority = 2, description = "Validate \"Book travel menu\" navigation items")
 
     public void validateBookTravelManu() {
+
         for (int i = 0; i < unitedBasePage.travelManu.size(); i++) {
             Assert.assertTrue(unitedBasePage.travelManu.get(i).isDisplayed());
         }
     }
-
+/*
+Test Case 3: Validate "Round-trip" and "One-way" radio buttons
+Given user is on "https://www.united.com/en/us"
+Then validate "Roundtrip" radio button is displayed, is enabled and is selected
+And validate "One-way" radio button is displayed, is enabled but is not selected
+When user clicks on "One-way" radio button
+Then validate "One-way" radio button is selected while "Roundtrip" radio button is
+deselected
+ */
     @Test(priority = 3, description = "Validate \"Round-trip\" and \"One-way\" radio buttons")
 
     public void validateRadioButtons() {
 
         //String[] textWayToTrips = {"Roundtrip", "One-way"};
         for (int i = 0; i < unitedBasePage.radioButtonsLabels.size(); i++) {
-            Assert.assertTrue(unitedBasePage.radioButtonsLabels.get(0).isDisplayed());
-            Assert.assertTrue(unitedBasePage.radioButtons.get(0).isEnabled());
-            Assert.assertFalse(unitedBasePage.radioButtons.get(0).isSelected());
-            //Assert.assertEquals(unitedBasePage.radioButtons.get(i).getText(), textWayToTrips[i]);
-
-            Assert.assertTrue(unitedBasePage.radioButtons.get(1).isDisplayed());
-            Assert.assertTrue(unitedBasePage.radioButtons.get(1).isEnabled());
-            Assert.assertFalse(unitedBasePage.radioButtons.get(1).isSelected());
-
-            unitedBasePage.radioButtons.get(1).click();
-            Assert.assertFalse(unitedBasePage.radioButtons.get(1).isSelected());
-            Assert.assertFalse(unitedBasePage.radioButtons.get(0).isSelected());
-
+            Assert.assertTrue(unitedBasePage.radioButtonsLabels.get(i).isDisplayed());
+            Assert.assertTrue(unitedBasePage.radioButtonsLabels.get(i).isEnabled());
         }
-    }
+            Assert.assertTrue(unitedBasePage.radioButtonsInput.get(0).isSelected());
+            Assert.assertFalse(unitedBasePage.radioButtonsInput.get(1).isSelected());
+
+            unitedBasePage.radioButtonsInput.get(1).click();
+            Assert.assertFalse(unitedBasePage.radioButtonsInput.get(0).isSelected());
+            Assert.assertTrue(unitedBasePage.radioButtonsInput.get(1).isSelected());
+        }
+
 
     @Test(priority = 4, description = "Validate \"Book with miles\" and \"Flexible dates\" checkboxes")
 
@@ -83,7 +115,7 @@ public class UnitedBaseTest extends UnitedBase {
             "Miami, FL, US (MIA")
     public void oneWayTicketSearch(){
 
-        unitedBasePage.radioButtons.get(1).click();
+        unitedBasePage.radioButtonsInput.get(1).click();
         unitedBasePage.fromInputBox.clear();
         unitedBasePage.fromInputBox.sendKeys("Chicago, IL, US (ORD)");
         unitedBasePage.destinationInputBox.clear();
